@@ -6,6 +6,106 @@
   <title>ChatBot</title>
 </head>
 <body>
+
+  <div class="react-div">
+  </div>
   
+
+
+  <!-- react -->
+  <script src="https://unpkg.com/supersimpledev/react.js"> </script>
+  <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+  
+  <!-- ChatBot  -->
+  <script src="https://unpkg.com/supersimpledev/chatbot.js"></script>
+  
+  <!-- babel -->
+  <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+
+
+
+  <script type="text/babel">
+
+    function ChatInput({chatContent, setChatContent}) {
+
+      const [chatInput, setChatInput] = React.useState("");
+
+      function textInput() {
+        setChatInput(event.target.value);
+      };
+      
+      
+
+      function sendMessage() {
+        setChatContent([...chatContent, {message: chatInput, key: crypto.randomUUID()}])
+      }
+
+      return(
+        <div>
+
+          <input 
+            type="text" 
+            placeholder="Write a message" 
+            onChange={textInput}  
+          />
+          <button onClick={sendMessage}>Send</button>
+          
+        </div>
+      )
+    };
+
+    function ChatMessage({message}) {
+      return(
+        <div>
+
+          <img 
+            src="resources/user.png" 
+            alt="" 
+            width="50px"
+          />
+          <p>{message}</p>
+
+        </div>
+      ) 
+    };
+
+    function ChatMessages({ chatContent }) {
+
+      return(
+        chatContent.map(content => {
+          return (
+            <ChatMessage
+              message={content.message}
+              key={content.key}
+            />
+          )
+        })
+      )
+    };
+
+    function App() {
+      const [chatContent, setChatContent] = React.useState([
+        {message:"Hi, Bnagladesh", key:crypto.randomUUID()},
+        {message:"Im Mahi", key: crypto.randomUUID() }
+      ]);
+
+      return(
+        <>
+          <ChatInput 
+            chatContent={chatContent} 
+            setChatContent={setChatContent}
+          />
+          <ChatMessages 
+            chatContent={chatContent} 
+          />
+        </>
+      )
+    };
+
+    const div = document.querySelector('.react-div');
+    ReactDOM.createRoot(div).render(<App/>);
+
+  </script>
+
 </body>
 </html>
